@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* La Liga inspired palette */
+    --background: 220 20% 97%;
+    --foreground: 220 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 10%;
+
+    /* Primary: Deep Crimson Red */
+    --primary: 350 85% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Dark Navy */
+    --secondary: 220 30% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted tones */
+    --muted: 220 15% 92%;
+    --muted-foreground: 220 15% 45%;
+
+    /* Accent: Golden */
+    --accent: 45 95% 55%;
+    --accent-foreground: 220 30% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 350 85% 45%;
+
+    --radius: 0.75rem;
+
+    /* Custom colors */
+    --team-home: 350 85% 45%;
+    --team-away: 220 60% 50%;
+    --win: 145 65% 42%;
+    --draw: 45 95% 55%;
+    --lose: 0 70% 55%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(350 85% 45%) 0%, hsl(350 90% 30%) 50%, hsl(220 30% 15%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 20% 98%) 100%);
+    --gradient-stats: linear-gradient(90deg, hsl(350 85% 45%) 0%, hsl(350 75% 55%) 100%);
+
+    /* Shadows */
+    --shadow-card: 0 4px 20px -4px hsl(220 30% 10% / 0.1);
+    --shadow-elevated: 0 12px 40px -8px hsl(220 30% 10% / 0.15);
+    --shadow-glow: 0 0 30px hsl(350 85% 45% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 30% 8%;
+    --foreground: 220 15% 95%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 220 15% 95%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 220 15% 95%;
+
+    --primary: 350 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 25% 20%;
+    --secondary-foreground: 220 15% 95%;
+
+    --muted: 220 25% 18%;
+    --muted-foreground: 220 15% 55%;
+
+    --accent: 45 90% 50%;
+    --accent-foreground: 220 30% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 25% 20%;
+    --input: 220 25% 20%;
+    --ring: 350 85% 55%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(350 85% 35%) 0%, hsl(220 30% 12%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 25% 12%) 0%, hsl(220 30% 10%) 100%);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-stats);
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .elevated-shadow {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .glow-shadow {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@layer components {
+  .score-display {
+    @apply font-display text-5xl font-bold tabular-nums;
+  }
+
+  .confidence-bar {
+    @apply h-2 rounded-full overflow-hidden bg-muted;
+  }
+
+  .confidence-fill {
+    @apply h-full rounded-full transition-all duration-700 ease-out;
+    background-image: var(--gradient-stats);
+  }
+
+  .match-card {
+    @apply relative overflow-hidden rounded-xl bg-card p-6 transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .match-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .stat-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium;
+  }
+}
