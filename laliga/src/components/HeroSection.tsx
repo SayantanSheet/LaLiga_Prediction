@@ -1,5 +1,4 @@
 import { Sparkles } from "lucide-react";
-import { TeamSelector } from "./TeamSelector";
 
 export const HeroSection = () => {
   return (
@@ -10,19 +9,17 @@ export const HeroSection = () => {
         <div className="absolute bottom-10 right-10 w-48 h-48 border-2 border-primary-foreground rounded-full" />
         <div className="absolute top-1/2 left-1/3 w-24 h-24 border border-primary-foreground rounded-full" />
       </div>
-      
+
       <div className="relative z-10 px-8 py-12 md:py-16 text-center">
         <h1 className="text-4xl md:text-6xl font-display font-bold text-primary-foreground mb-4 tracking-tight italic">
           LaLiga Match Predictor
         </h1>
-        
+
         <p className="text-primary-foreground/80 text-lg max-w-xl mx-auto mb-10">
-          Select two teams and let our AI analyze team statistics, form, and historical 
+          Select two teams and let our AI analyze team statistics, form, and historical
           data to predict the most likely outcome.
         </p>
 
-        {/* Team Selector */}
-        <TeamSelector />
       </div>
 
       {/* Football pattern overlay */}

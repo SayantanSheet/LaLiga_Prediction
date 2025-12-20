@@ -1,4 +1,5 @@
-import { Match, teamLogos } from "@/data/matches";
+import { Match } from "@/api/client";
+import { teamLogos } from "@/data/matches";
 import { Trophy, Calendar, MapPin } from "lucide-react";
 
 interface MatchCardProps {
@@ -7,14 +8,9 @@ interface MatchCardProps {
 }
 
 export const MatchCard = ({ match, index }: MatchCardProps) => {
-  const getResultColor = (homeScore: number, awayScore: number, isHome: boolean) => {
-    if (homeScore === awayScore) return "text-result-draw";
-    if (isHome) return homeScore > awayScore ? "text-result-win" : "text-result-lose";
-    return awayScore > homeScore ? "text-result-win" : "text-result-lose";
-  };
 
   return (
-    <div 
+    <div
       className="match-card group"
       style={{ animationDelay: `${index * 100}ms` }}
     >
@@ -46,14 +42,9 @@ export const MatchCard = ({ match, index }: MatchCardProps) => {
         </div>
 
         {/* Score Display */}
-        <div className="flex items-center gap-3 px-6 py-4 rounded-xl bg-secondary">
-          <span className={`score-display ${getResultColor(match.homeScore, match.awayScore, true)}`}>
-            {match.homeScore}
-          </span>
-          <span className="text-2xl text-secondary-foreground/50">-</span>
-          <span className={`score-display ${getResultColor(match.homeScore, match.awayScore, false)}`}>
-            {match.awayScore}
-          </span>
+        {/* VS Display */}
+        <div className="flex items-center justify-center px-4 py-2 rounded-xl bg-secondary/50">
+          <span className="font-display font-bold text-xl text-muted-foreground">VS</span>
         </div>
 
         {/* Away Team */}
@@ -72,19 +63,19 @@ export const MatchCard = ({ match, index }: MatchCardProps) => {
           <span className="text-muted-foreground">Win Probability</span>
           <span className="font-medium text-primary">{match.confidence}% confidence</span>
         </div>
-        
+
         <div className="flex gap-1 h-3 rounded-full overflow-hidden bg-muted">
-          <div 
+          <div
             className="bg-result-win transition-all duration-700 rounded-l-full"
             style={{ width: `${match.homeWinProb}%` }}
             title={`Home: ${match.homeWinProb}%`}
           />
-          <div 
+          <div
             className="bg-result-draw transition-all duration-700"
             style={{ width: `${match.drawProb}%` }}
             title={`Draw: ${match.drawProb}%`}
           />
-          <div 
+          <div
             className="bg-result-lose transition-all duration-700 rounded-r-full"
             style={{ width: `${match.awayWinProb}%` }}
             title={`Away: ${match.awayWinProb}%`}
