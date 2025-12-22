@@ -10,11 +10,40 @@ export interface PredictionResult {
         draw: number;
         away_win: number;
     };
+    goal_probabilities: {
+        over_1_5: number;
+        over_2_5: number;
+        btts: number;
+    };
     confidence: number;
     insights: {
         home_form: TeamStats;
         away_form: TeamStats;
     };
+    poisson_analysis?: PoissonAnalysis;
+}
+
+export interface PoissonAnalysis {
+    home_team_stats: PoissonTeamStats;
+    away_team_stats: PoissonTeamStats;
+    lambda_values: {
+        lambda_home: number;
+        lambda_away: number;
+    };
+    goal_probabilities?: {
+        over_1_5: number;
+        over_2_5: number;
+        btts: number;
+    };
+    ai_insight?: string;
+}
+
+export interface PoissonTeamStats {
+    team: string;
+    matches_played: number;
+    avg_goals_scored: number;
+    avg_goals_conceded: number;
+    strength: 'Strong' | 'Average' | 'Weak';
 }
 
 export interface TeamStats {
@@ -22,35 +51,20 @@ export interface TeamStats {
     wins: number;
     draws: number;
     losses: number;
-    avg_goals_for: number;
-    avg_goals_against: number;
+    goals_scored: number;
+    goals_conceded: number;
+    match_history: MatchHistoryItem[];
 }
 
-export interface Match {
-    id: string;
-    homeTeam: string;
-    awayTeam: string;
-    homeScore: number;
-    awayScore: number;
-    homeWinProb: number;
-    drawProb: number;
-    awayWinProb: number;
-    confidence: number;
+export interface MatchHistoryItem {
     date: string;
-    time: string;
-    stadium: string;
-    matchday: number;
-    season?: string;
+    opponent: string;
+    venue: 'Home' | 'Away';
+    score: string;
+    outcome: 'Win' | 'Draw' | 'Loss';
 }
 
 export const api = {
-    getMatches: async (): Promise<Match[]> => {
-        const response = await fetch(`${API_BASE_URL}/matches`);
-        if (!response.ok) throw new Error('Failed to fetch matches');
-        const data = await response.json();
-        return data.matches;
-    },
-
     getTeams: async (): Promise<string[]> => {
         const response = await fetch(`${API_BASE_URL}/teams`);
         if (!response.ok) throw new Error('Failed to fetch teams');

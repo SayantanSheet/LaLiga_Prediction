@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { HeroSection } from "@/components/HeroSection";
 
-import { MatchCard } from "@/components/MatchCard";
 import { ModelInfo } from "@/components/ModelInfo";
 import { TeamSelector } from "@/components/Predictor/TeamSelector";
 import { PredictionResultCard } from "@/components/Predictor/PredictionResult";
-import { api, PredictionResult, Match } from "@/api/client";
+import { api, PredictionResult } from "@/api/client";
 import { Loader2, RotateCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -14,20 +13,7 @@ const Index = () => {
   const [prediction, setPrediction] = useState<PredictionResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [matches, setMatches] = useState<Match[]>([]);
   const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchMatches = async () => {
-      try {
-        const data = await api.getMatches();
-        setMatches(data);
-      } catch (e) {
-        console.log("Failed to load initial matches");
-      }
-    };
-    fetchMatches();
-  }, []);
 
   const handlePredict = async (home: string, away: string) => {
     setIsLoading(true);
@@ -54,8 +40,6 @@ const Index = () => {
     setIsRefreshing(true);
     try {
       await api.refreshData();
-      const updatedMatches = await api.getMatches();
-      setMatches(updatedMatches);
       toast({
         title: "Data Refreshed",
         description: "Latest LaLiga match data has been fetched.",
@@ -71,13 +55,7 @@ const Index = () => {
     }
   };
 
-  const sortedMatches = [...matches].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  const now = new Date();
-  const upcomingMatches = sortedMatches.filter(m => new Date(m.date + 'T' + m.time) > now);
-  // Fallback to recent matches if no upcoming ones
-  const displayedUpcoming = upcomingMatches.length > 0 ? upcomingMatches.slice(0, 4) : [];
-  // Use recent matches for display if we have no upcoming
-  const displayMatches = displayedUpcoming.length > 0 ? displayedUpcoming : sortedMatches.slice(-4);
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -129,19 +107,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Recent/Upcoming Fixtures (Legacy) */}
-        <section className="bg-muted/20 -mx-4 px-4 py-16">
-          <div className="container mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-display font-bold">Latest Fixtures</h2>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {displayMatches.map((match, index) => (
-                <MatchCard key={match.id} match={match} index={index} />
-              ))}
-            </div>
-          </div>
-        </section>
+
 
         <ModelInfo />
 

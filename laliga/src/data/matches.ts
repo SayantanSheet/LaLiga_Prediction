@@ -1,28 +1,7 @@
 // Match interface moved to api/client.ts or can be imported from there
 // Keeping this file for static assets like teamLogos
 
-export const laLigaTeams = [
-  "Real Madrid",
-  "Barcelona",
-  "Atlético Madrid",
-  "Athletic Bilbao",
-  "Girona",
-  "Real Sociedad",
-  "Real Betis",
-  "Villarreal",
-  "Valencia",
-  "Sevilla",
-  "Getafe",
-  "Osasuna",
-  "Alavés",
-  "Celta Vigo",
-  "Mallorca",
-  "Rayo Vallecano",
-  "Las Palmas",
-  "Granada",
-  "Almería",
-  "Cádiz",
-];
+
 
 export const teamLogos: Record<string, string> = {
   "Real Madrid": "⚪",

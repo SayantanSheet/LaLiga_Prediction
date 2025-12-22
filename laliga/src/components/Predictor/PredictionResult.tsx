@@ -2,6 +2,8 @@ import { PredictionResult } from "@/api/client";
 import { teamLogos } from "@/data/matches";
 import { cn } from "@/lib/utils";
 import { Trophy, TrendingUp, AlertCircle, BarChart3, Activity } from "lucide-react";
+import { RecentForm } from "./RecentForm";
+import { PoissonAnalysis } from "./PoissonAnalysis";
 
 interface PredictionResultCardProps {
     result: PredictionResult;
@@ -82,6 +84,18 @@ export function PredictionResultCard({ result }: PredictionResultCardProps) {
                 </div>
             </div>
 
+            {/* Recent Form Analysis Section */}
+            <RecentForm
+                homeTeam={home_team}
+                awayTeam={away_team}
+                homeStats={insights.home_form}
+                awayStats={insights.away_form}
+            />
+
+            {/* Poisson Performance Analysis */}
+            {result.poisson_analysis && (
+                <PoissonAnalysis analysis={result.poisson_analysis} />
+            )}
 
             {/* Analysis Grid */}
             <div className="grid md:grid-cols-2 gap-6">
@@ -96,18 +110,18 @@ export function PredictionResultCard({ result }: PredictionResultCardProps) {
                         <div className="flex justify-between items-center text-sm">
                             <span className="text-muted-foreground">Avg Goals Scored</span>
                             <div className="flex gap-4 font-medium">
-                                <span className="text-[hsl(var(--team-home))]">{insights.home_form.avg_goals_for.toFixed(2)}</span>
+                                <span className="text-[hsl(var(--team-home))]">{(insights.home_form.goals_scored / (insights.home_form.played || 1)).toFixed(2)}</span>
                                 <span className="text-muted-foreground">vs</span>
-                                <span className="text-[hsl(var(--team-away))]">{insights.away_form.avg_goals_for.toFixed(2)}</span>
+                                <span className="text-[hsl(var(--team-away))]">{(insights.away_form.goals_scored / (insights.away_form.played || 1)).toFixed(2)}</span>
                             </div>
                         </div>
                         <div className="h-px bg-border/50" />
                         <div className="flex justify-between items-center text-sm">
                             <span className="text-muted-foreground">Avg Goals Conceded</span>
                             <div className="flex gap-4 font-medium">
-                                <span className="text-[hsl(var(--team-home))]">{insights.home_form.avg_goals_against.toFixed(2)}</span>
+                                <span className="text-[hsl(var(--team-home))]">{(insights.home_form.goals_conceded / (insights.home_form.played || 1)).toFixed(2)}</span>
                                 <span className="text-muted-foreground">vs</span>
-                                <span className="text-[hsl(var(--team-away))]">{insights.away_form.avg_goals_against.toFixed(2)}</span>
+                                <span className="text-[hsl(var(--team-away))]">{(insights.away_form.goals_conceded / (insights.away_form.played || 1)).toFixed(2)}</span>
                             </div>
                         </div>
                         <div className="h-px bg-border/50" />
@@ -137,7 +151,7 @@ export function PredictionResultCard({ result }: PredictionResultCardProps) {
                         <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
                             <AlertCircle className="w-4 h-4 text-accent mt-1" />
                             <p className="text-sm text-foreground/90">
-                                Both teams average {(insights.home_form.avg_goals_for + insights.away_form.avg_goals_for).toFixed(1)} combined goals per game, suggesting a {(insights.home_form.avg_goals_for + insights.away_form.avg_goals_for) > 2.5 ? "High Scoring" : "Low Scoring"} affair.
+                                Both teams average {((insights.home_form.goals_scored / (insights.home_form.played || 1)) + (insights.away_form.goals_scored / (insights.away_form.played || 1))).toFixed(1)} combined goals per game, suggesting a {((insights.home_form.goals_scored / (insights.home_form.played || 1)) + (insights.away_form.goals_scored / (insights.away_form.played || 1))) > 2.5 ? "High Scoring" : "Low Scoring"} affair.
                             </p>
                         </div>
                     </div>
